@@ -1,288 +1,307 @@
-/* =========================================
-   1. DATA MODULE (Ubah isi portofolio di sini)
-   ========================================= */
-const PORTFOLIO_DATA = {
-  skills: [
-    {
-      category: "Frontend Development",
-      items: [
-        "HTML5",
-        "CSS3",
-        "JavaScript (ES6+)",
-        "TypeScript",
-        "React",
-        "Responsive Design",
-      ],
-    },
-    {
-      category: "Software & OOP",
-      items: [
-        "Java",
-        "Object-Oriented Programming",
-        "Modular Architecture",
-        "Git & GitHub",
-      ],
-    },
-    {
-      category: "Sistem & Jaringan",
-      items: [
-        "Logika Informatika",
-        "Dasar Jaringan Komputer",
-        "REST API Integration",
-        "SQL",
-      ],
-    },
-  ],
-  projects: [
-    {
-      id: "warkoplin-pos",
-      title: "Restoran Warkoplin CLI",
-      category: "desktop",
-      categoryLabel: "Desktop / OOP",
-      summary:
-        "Aplikasi kasir dan manajemen pesanan berbasis Java dengan arsitektur berlapis.",
-      description:
-        "Sistem manajemen pemesanan dan pencetakan struk berbasis Java Console yang dipisahkan ke dalam paket UI, Model, Service, dan Utils lengkap dengan validasi diskon dan penyimpanan file.",
-      tags: ["Java", "OOP", "File Persistence", "Clean Architecture"],
-      demoUrl: "#",
-      repoUrl: "#",
-    },
-    {
-      id: "interactive-module",
-      title: "Web Modul Belajar Interaktif",
-      category: "web",
-      categoryLabel: "Web App",
-      summary:
-        "Konversi materi kuliah menjadi halaman web interaktif dengan navigasi terstruktur.",
-      description:
-        "Platform pembaca modul digital responsif yang memudahkan mahasiswa menavigasi bab materi, mencatat ringkasan, dan mengakses latihan soal secara cepat.",
-      tags: ["HTML5", "CSS3", "JavaScript", "UI/UX"],
-      demoUrl: "#",
-      repoUrl: "#",
-    },
-    {
-      id: "personal-portfolio",
-      title: "Website Portofolio Modular",
-      category: "web",
-      categoryLabel: "Web App",
-      summary:
-        "Portofolio pribadi dengan pemisahan struktur, gaya, dan data dinamis.",
-      description:
-        "Website portofolio yang dirancang tanpa dependensi berat agar cepat dimuat, mudah dikustomisasi lewat objek data terpusat, dan siap di-deploy ke berbagai hosting statis.",
-      tags: ["HTML", "CSS Variables", "Vanilla JS"],
-      demoUrl: "#",
-      repoUrl: "#",
-    },
-  ],
-};
-
-/* =========================================
-   2. RENDER MODULE (Merender data ke DOM)
-   ========================================= */
-const Renderer = {
-  skills() {
-    const container = document.getElementById("skillsContainer");
-    if (!container) return;
-
-    container.innerHTML = PORTFOLIO_DATA.skills
-      .map(
-        (group) => `
-        <article class="skill-card">
-          <h3>${group.category}</h3>
-          <div class="skill-tags">
-            ${group.items.map((skill) => `<span class="tag">${skill}</span>`).join("")}
-          </div>
-        </article>
-      `,
-      )
-      .join("");
+/* ==========================================
+   1. DATA PROYEK (Mudah diubah / ditambah)
+   ========================================== */
+const projectsData = [
+  {
+    category: "Java OOP &bull; Arsitektur Modular",
+    title: "Aplikasi Kasir & Manajemen Struk Restoran",
+    desc: "Aplikasi kasir restoran yang dirancang sepenuhnya menggunakan prinsip Object-Oriented Programming (OOP) di Java. Sistem memisahkan logika bisnis dari tampilan dan penyimpanan data agar mudah dikembangkan dan diuji secara terpisah.",
+    highlights: [
+      "Pemisahan paket modular: UI (interaksi pengguna), Model (entitas Menu, ItemPesanan, Transaksi), Service (kalkulasi & manajemen order), dan Utils (validasi & formatter).",
+      "Implementasi File Persistence untuk menyimpan arsip struk transaksi secara otomatis dalam format teks/CSV terstruktur.",
+      "Perhitungan otomatis subtotal, pajak restoran (PB1), diskon promo, dan kembalian dengan validasi input ketat.",
+    ],
+    tags: [
+      "Java SE",
+      "OOP Architecture",
+      "File Persistence",
+      "Layered Design",
+      "Exception Handling",
+    ],
   },
-
-  projects(filter = "all") {
-    const container = document.getElementById("projectsContainer");
-    if (!container) return;
-
-    const filtered =
-      filter === "all"
-        ? PORTFOLIO_DATA.projects
-        : PORTFOLIO_DATA.projects.filter((item) => item.category === filter);
-
-    container.innerHTML = filtered
-      .map(
-        (project) => `
-        <article class="project-card">
-          <div>
-            <span class="badge">${project.categoryLabel}</span>
-            <h3>${project.title}</h3>
-            <p>${project.summary}</p>
-          </div>
-          <div>
-            <div class="project-tags">
-              ${project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-            </div>
-            <div class="project-footer">
-              <button class="btn btn-secondary btn-sm" data-project-id="${project.id}">
-                Detail Proyek
-              </button>
-            </div>
-          </div>
-        </article>
-      `,
-      )
-      .join("");
+  {
+    category: "Pengembangan Web &bull; EdTech",
+    title: "Modul Pembelajaran Interaktif Logika & Algoritma",
+    desc: "Media pembelajaran berbasis web yang dirancang untuk membantu mahasiswa memahami konsep dasar logika informatika, tabel kebenaran, dan alur percabangan algoritma melalui simulasi visual interaktif.",
+    highlights: [
+      "Simulasi interaktif gerbang logika (AND, OR, NOT, XOR) yang merespons input pengguna secara real-time.",
+      "Sistem evaluasi mandiri (kuis terintegrasi) dengan umpan balik langsung dan skor otomatis.",
+      "Desain antarmuka responsif yang nyaman diakses melalui perangkat desktop maupun smartphone.",
+    ],
+    tags: [
+      "HTML5 Semantik",
+      "Tailwind CSS",
+      "Vanilla JavaScript",
+      "DOM Manipulation",
+      "Responsive Design",
+    ],
   },
-};
-
-/* =========================================
-   3. INTERACTION & MODAL MODULE
-   ========================================= */
-const UIController = {
-  initNavigation() {
-    const navToggle = document.getElementById("navToggle");
-    const navLinks = document.getElementById("navLinks");
-
-    if (!navToggle || !navLinks) return;
-
-    navToggle.addEventListener("click", () => {
-      const isOpen = navLinks.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    navLinks.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-      });
-    });
+  {
+    category: "Sistem Informasi &bull; Basis Data & Jaringan",
+    title: "Sistem Inventaris Lab & Topologi Jaringan Kampus",
+    desc: "Solusi pencatatan aset perangkat keras dan konfigurasi jaringan lokal (LAN) untuk laboratorium komputer guna mempermudah pelacakan spesifikasi perangkat dan alokasi alamat IP.",
+    highlights: [
+      "Perancangan skema relasional (ERD) ter-normalisasi untuk pencatatan unit PC, perangkat jaringan (switch/router), dan riwayat pemeliharaan.",
+      "Perencanaan pembagian subnetting IPv4 untuk segmentasi jaringan antar ruangan laboratorium.",
+      "Query SQL teroptimasi untuk pencarian cepat status perangkat dan laporan audit inventaris.",
+    ],
+    tags: [
+      "MySQL",
+      "Database Normalization",
+      "TCP/IP & Subnetting",
+      "System Analysis",
+      "Documentation",
+    ],
   },
+];
 
-  initProjectFilter() {
-    const filterBar = document.getElementById("filterBar");
-    if (!filterBar) return;
+/* ==========================================
+   2. MODUL NAVIGASI & SCROLL REVEAL
+   ========================================== */
+function initNavigation() {
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.getElementById("menu-icon");
+  const mobileLinks = document.querySelectorAll(".mobile-link");
 
-    filterBar.addEventListener("click", (event) => {
-      const btn = event.target.closest(".filter-btn");
-      if (!btn) return;
+  if (!mobileMenuBtn || !mobileMenu || !menuIcon) return;
 
-      filterBar
-        .querySelectorAll(".filter-btn")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      Renderer.projects(btn.dataset.filter);
+  mobileMenuBtn.addEventListener("click", () => {
+    const isHidden = mobileMenu.classList.toggle("hidden");
+    menuIcon.className = isHidden
+      ? "fa-solid fa-bars text-xl"
+      : "fa-solid fa-xmark text-xl";
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.add("hidden");
+      menuIcon.className = "fa-solid fa-bars text-xl";
     });
-  },
+  });
+}
 
-  initProjectModal() {
-    const projectsContainer = document.getElementById("projectsContainer");
-    const modal = document.getElementById("projectModal");
-    const closeBtn = document.getElementById("closeModalBtn");
-
-    if (!projectsContainer || !modal || !closeBtn) return;
-
-    projectsContainer.addEventListener("click", (event) => {
-      const btn = event.target.closest("[data-project-id]");
-      if (!btn) return;
-
-      const project = PORTFOLIO_DATA.projects.find(
-        (p) => p.id === btn.dataset.projectId,
-      );
-      if (!project) return;
-
-      document.getElementById("modalCategory").textContent =
-        project.categoryLabel;
-      document.getElementById("modalTitle").textContent = project.title;
-      document.getElementById("modalDesc").textContent = project.description;
-      document.getElementById("modalTags").innerHTML = project.tags
-        .map((tag) => `<span class="tag">${tag}</span>`)
-        .join("");
-      document.getElementById("modalDemoLink").href = project.demoUrl;
-      document.getElementById("modalRepoLink").href = project.repoUrl;
-
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-    });
-
-    const closeModal = () => {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-    };
-
-    closeBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal();
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-    });
-  },
-
-  initContact() {
-    const copyBtn = document.getElementById("copyEmailBtn");
-    const emailText = document.getElementById("emailText");
-    const copyFeedback = document.getElementById("copyFeedback");
-
-    if (copyBtn && emailText && copyFeedback) {
-      copyBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(emailText.textContent.trim());
-          copyFeedback.textContent = "Email berhasil disalin ke clipboard!";
-          setTimeout(() => (copyFeedback.textContent = ""), 3000);
-        } catch {
-          copyFeedback.textContent = "Gagal menyalin email secara otomatis.";
+function initScrollReveal() {
+  const revealElements = document.querySelectorAll(".reveal");
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
         }
       });
+    },
+    { threshold: 0.12 },
+  );
+
+  revealElements.forEach((el) => revealObserver.observe(el));
+}
+
+/* ==========================================
+   3. MODUL FILTER & MODAL PROYEK
+   ========================================== */
+function initProjectFilters() {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const projectCards = document.querySelectorAll(".project-card");
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => {
+        b.classList.remove("bg-cyan-500", "text-slate-950", "font-semibold");
+        b.classList.add(
+          "bg-slate-900",
+          "text-slate-300",
+          "border",
+          "border-slate-800",
+        );
+      });
+      btn.classList.remove(
+        "bg-slate-900",
+        "text-slate-300",
+        "border",
+        "border-slate-800",
+      );
+      btn.classList.add("bg-cyan-500", "text-slate-950", "font-semibold");
+
+      const filterValue = btn.getAttribute("data-filter");
+
+      projectCards.forEach((card) => {
+        const cardCategory = card.getAttribute("data-category");
+        if (filterValue === "all" || filterValue === cardCategory) {
+          card.style.display = "flex";
+          setTimeout(() => card.classList.add("active"), 50);
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  });
+}
+
+function initProjectModal() {
+  const modal = document.getElementById("project-modal");
+  const openButtons = document.querySelectorAll(".open-modal-btn");
+  const closeTopBtn = document.getElementById("close-modal-top");
+  const closeBottomBtn = document.getElementById("close-modal-bottom");
+  const discussLink = document.getElementById("modal-discuss-link");
+
+  if (!modal) return;
+
+  function openProjectModal(index) {
+    const data = projectsData[index];
+    if (!data) return;
+
+    document.getElementById("modal-category").innerHTML = data.category;
+    document.getElementById("modal-title").textContent = data.title;
+    document.getElementById("modal-desc").textContent = data.desc;
+
+    const highlightsList = document.getElementById("modal-highlights");
+    highlightsList.innerHTML = data.highlights
+      .map((item) => `<li>${item}</li>`)
+      .join("");
+
+    const tagsContainer = document.getElementById("modal-tags");
+    tagsContainer.innerHTML = data.tags
+      .map(
+        (tag) =>
+          `<span class="px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-cyan-300 text-xs font-mono">${tag}</span>`,
+      )
+      .join("");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeProjectModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  openButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.getAttribute("data-project-index"));
+      openProjectModal(index);
+    });
+  });
+
+  if (closeTopBtn) closeTopBtn.addEventListener("click", closeProjectModal);
+  if (closeBottomBtn)
+    closeBottomBtn.addEventListener("click", closeProjectModal);
+  if (discussLink) discussLink.addEventListener("click", closeProjectModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeProjectModal();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeProjectModal();
+    }
+  });
+}
+
+/* ==========================================
+   4. MODUL KONTAK & SALIN EMAIL
+   ========================================== */
+function initCopyEmail() {
+  const copyBtn = document.getElementById("copy-email-btn");
+  const copyLabel = document.getElementById("copy-btn-label");
+  const emailEl = document.getElementById("email-text");
+
+  if (!copyBtn || !copyLabel || !emailEl) return;
+
+  const emailText = emailEl.textContent.trim();
+
+  copyBtn.addEventListener("click", () => {
+    const tempInput = document.createElement("textarea");
+    tempInput.value = emailText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    copyLabel.textContent = "Tersalin!";
+    copyBtn.classList.add("bg-emerald-500", "text-slate-950");
+    copyBtn.classList.remove("bg-slate-800", "text-slate-200");
+
+    setTimeout(() => {
+      copyLabel.textContent = "Salin";
+      copyBtn.classList.remove("bg-emerald-500", "text-slate-950");
+      copyBtn.classList.add("bg-slate-800", "text-slate-200");
+    }, 2200);
+  });
+}
+
+function initContactForm() {
+  const contactForm = document.getElementById("contact-form");
+  if (!contactForm) return;
+
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const messageInput = document.getElementById("message");
+
+  const nameError = document.getElementById("name-error");
+  const emailError = document.getElementById("email-error");
+  const messageError = document.getElementById("message-error");
+  const formFeedback = document.getElementById("form-feedback");
+
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    if (nameInput.value.trim().length < 3) {
+      nameError.classList.remove("hidden");
+      nameInput.classList.add("border-rose-500");
+      isValid = false;
+    } else {
+      nameError.classList.add("hidden");
+      nameInput.classList.remove("border-rose-500");
     }
 
-    const form = document.getElementById("contactForm");
-    if (!form) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+      emailError.classList.remove("hidden");
+      emailInput.classList.add("border-rose-500");
+      isValid = false;
+    } else {
+      emailError.classList.add("hidden");
+      emailInput.classList.remove("border-rose-500");
+    }
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name");
-      const email = document.getElementById("email");
-      const message = document.getElementById("message");
-      const formFeedback = document.getElementById("formFeedback");
+    if (messageInput.value.trim().length < 10) {
+      messageError.classList.remove("hidden");
+      messageInput.classList.add("border-rose-500");
+      isValid = false;
+    } else {
+      messageError.classList.add("hidden");
+      messageInput.classList.remove("border-rose-500");
+    }
 
-      let isValid = true;
-      document.getElementById("nameError").textContent = "";
-      document.getElementById("emailError").textContent = "";
-      document.getElementById("messageError").textContent = "";
+    if (isValid) {
+      formFeedback.classList.remove("hidden");
+      contactForm.reset();
+      setTimeout(() => {
+        formFeedback.classList.add("hidden");
+      }, 5000);
+    }
+  });
+}
 
-      if (name.value.trim().length < 2) {
-        document.getElementById("nameError").textContent =
-          "Nama minimal 2 karakter.";
-        isValid = false;
-      }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-        document.getElementById("emailError").textContent =
-          "Format email tidak valid.";
-        isValid = false;
-      }
-
-      if (message.value.trim().length < 10) {
-        document.getElementById("messageError").textContent =
-          "Pesan minimal 10 karakter.";
-        isValid = false;
-      }
-
-      if (isValid) {
-        formFeedback.textContent = "Terima kasih! Pesan Anda siap diproses.";
-        form.reset();
-      }
-    });
-  },
-};
-
-/* =========================================
-   4. INITIALIZATION
-   ========================================= */
+/* ==========================================
+   5. INISIALISASI UTAMA
+   ========================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
-  Renderer.skills();
-  Renderer.projects();
-  UIController.initNavigation();
-  UIController.initProjectFilter();
-  UIController.initProjectModal();
-  UIController.initContact();
+  const yearEl = document.getElementById("current-year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  initNavigation();
+  initScrollReveal();
+  initProjectFilters();
+  initProjectModal();
+  initCopyEmail();
+  initContactForm();
 });
